@@ -11,7 +11,7 @@ const DEFAULTS = {
   lastProject: null,
   cleanup: {
     enabled: true,
-    intervalMinutes: 30,
+    intervalMinutes: 1440,
     retentionDays: 30,
     autoDeleteResolved: true,
   },

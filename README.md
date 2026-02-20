@@ -142,7 +142,7 @@ npm install && npm start
 
 ## Configuration
 
-Config lives at `~/.config/snag/config.json`:
+Config lives at `~/.config/snag/config.json`. Created automatically on first run with sensible defaults:
 
 ```json
 {
@@ -154,12 +154,22 @@ Config lives at `~/.config/snag/config.json`:
   "lastProject": "/Users/you/projects/my-app",
   "cleanup": {
     "enabled": true,
-    "intervalMinutes": 30,
+    "intervalMinutes": 1440,
     "retentionDays": 30,
     "autoDeleteResolved": true
   }
 }
 ```
+
+| Field | What it does |
+|---|---|
+| `hotkey` | Global shortcut to open the capture form. Uses [Electron accelerator syntax](https://www.electronjs.org/docs/latest/api/accelerator). |
+| `projects` | List of project directories, ordered by most recently used. Managed automatically — you add projects via the capture form. |
+| `lastProject` | Pre-selected project next time you capture. |
+| `cleanup.enabled` | Whether background cleanup runs at all. |
+| `cleanup.intervalMinutes` | How often cleanup checks for old issues. Default `1440` (once a day). Set to `60` for hourly, or `0` to disable background sweeps (you can still trigger cleanup manually from the dashboard). |
+| `cleanup.retentionDays` | How long resolved issues stick around before being deleted. |
+| `cleanup.autoDeleteResolved` | If `true`, resolved issues are cleaned up after `retentionDays`. If `false`, only issues older than 2x `retentionDays` are removed (hard cutoff). |
 
 ## The Real Workflow
 
