@@ -5,8 +5,10 @@
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --mac",
-    "build:dir": "electron-builder --mac --dir"
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:dir": "electron-builder --dir"
   },
   "build": {
     "appId": "com.snag.app",
@@ -18,6 +20,14 @@
       "extendInfo": {
         "LSUIElement": true
       }
+    },
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
     },
     "files": [
       "src/**/*",

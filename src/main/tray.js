@@ -1,21 +1,26 @@
-const { Tray, Menu, nativeImage, app } = require('electron');
+const { Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 
 let tray = null;
 let flashTimeout = null;
 
-const iconPath = path.join(__dirname, '..', '..', 'assets', 'IconTemplate.png');
-const activeIconPath = path.join(
-  __dirname,
-  '..',
-  '..',
-  'assets',
-  'icon-active.png'
-);
+const assetsDir = path.join(__dirname, '..', '..', 'assets');
+
+function getIconPath() {
+  if (process.platform === 'win32') {
+    return path.join(assetsDir, 'icon.png');
+  }
+  return path.join(assetsDir, 'IconTemplate.png');
+}
+
+function getActiveIconPath() {
+  return path.join(assetsDir, 'icon-active.png');
+}
 
 function create({ onShowCapture, onShowDashboard, onQuit }) {
+  const iconPath = getIconPath();
   const icon = nativeImage.createFromPath(iconPath);
-  icon.setTemplateImage(true);
+  if (process.platform === 'darwin') icon.setTemplateImage(true);
   tray = new Tray(icon);
   tray.setToolTip('Snag');
 
@@ -36,14 +41,14 @@ function flash() {
   if (!tray) return;
 
   try {
-    const activeIcon = nativeImage.createFromPath(activeIconPath);
+    const activeIcon = nativeImage.createFromPath(getActiveIconPath());
     tray.setImage(activeIcon);
 
     if (flashTimeout) clearTimeout(flashTimeout);
     flashTimeout = setTimeout(() => {
       if (!tray) return;
-      const icon = nativeImage.createFromPath(iconPath);
-      icon.setTemplateImage(true);
+      const icon = nativeImage.createFromPath(getIconPath());
+      if (process.platform === 'darwin') icon.setTemplateImage(true);
       tray.setImage(icon);
     }, 300);
   } catch {

@@ -12,7 +12,7 @@ npm install --no-audit --no-fund
 
 # Build the .app bundle
 echo "Building Snag.app..."
-npm run build 2>&1 | tail -5
+npm run build:mac 2>&1 | tail -5
 
 # Copy to /Applications
 APP_SRC="dist/mac-arm64/Snag.app"

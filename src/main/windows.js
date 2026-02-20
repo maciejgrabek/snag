@@ -4,12 +4,13 @@ const path = require('path');
 let captureWindow = null;
 let dashboardWindow = null;
 
+const isMac = process.platform === 'darwin';
 const preloadPath = path.join(__dirname, '..', 'preload', 'preload.js');
 
 function getCaptureWindow() {
   if (captureWindow && !captureWindow.isDestroyed()) return captureWindow;
 
-  captureWindow = new BrowserWindow({
+  const opts = {
     width: 520,
     height: 560,
     show: false,
@@ -17,8 +18,6 @@ function getCaptureWindow() {
     resizable: false,
     alwaysOnTop: true,
     skipTaskbar: true,
-    vibrancy: 'popover',
-    visualEffectState: 'active',
     transparent: true,
     webPreferences: {
       preload: preloadPath,
@@ -26,7 +25,14 @@ function getCaptureWindow() {
       nodeIntegration: false,
       sandbox: true,
     },
-  });
+  };
+
+  if (isMac) {
+    opts.vibrancy = 'popover';
+    opts.visualEffectState = 'active';
+  }
+
+  captureWindow = new BrowserWindow(opts);
 
   captureWindow.loadFile(
     path.join(__dirname, '..', 'renderer', 'capture', 'capture.html')
@@ -52,7 +58,7 @@ function showCaptureWindow() {
   const cursor = screen.getCursorScreenPoint();
   const display = screen.getDisplayNearestPoint(cursor);
   const { x, y, width } = display.workArea;
-  const [winWidth, winHeight] = win.getSize();
+  const [winWidth] = win.getSize();
   const posX = Math.round(x + (width - winWidth) / 2);
   const posY = y + 80;
 
@@ -77,20 +83,25 @@ function getDashboardWindow() {
     return dashboardWindow;
   }
 
-  dashboardWindow = new BrowserWindow({
+  const opts = {
     width: 700,
     height: 500,
     show: false,
-    titleBarStyle: 'hiddenInset',
-    vibrancy: 'sidebar',
-    visualEffectState: 'active',
     webPreferences: {
       preload: preloadPath,
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
     },
-  });
+  };
+
+  if (isMac) {
+    opts.titleBarStyle = 'hiddenInset';
+    opts.vibrancy = 'sidebar';
+    opts.visualEffectState = 'active';
+  }
+
+  dashboardWindow = new BrowserWindow(opts);
 
   dashboardWindow.loadFile(
     path.join(__dirname, '..', 'renderer', 'dashboard', 'dashboard.html')

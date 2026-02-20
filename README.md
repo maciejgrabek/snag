@@ -119,6 +119,8 @@ This sits in the sweet spot between MCP (overkill — you'd need a server, tool 
 
 ## Install
 
+### macOS
+
 ```bash
 git clone <repo-url> && cd snag
 ./setup.sh
@@ -128,7 +130,18 @@ That's it. One command. It installs dependencies, builds a native macOS `.app` b
 
 To uninstall: `rm -rf /Applications/Snag.app`
 
-For development (run directly from source without installing):
+### Windows (untested — contributions welcome)
+
+```
+git clone <repo-url> && cd snag
+setup.bat
+```
+
+Builds an installer and a portable `.exe` in the `dist\` folder. Shortcut is `Ctrl+Shift+X`. Config lives at `%APPDATA%\snag\config.json`.
+
+Windows support is implemented but hasn't been tested on a real Windows machine yet. If you try it: issues and PRs are very welcome.
+
+### From source (any platform)
 
 ```bash
 npm install && npm start

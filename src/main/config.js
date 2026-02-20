@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const CONFIG_DIR = path.join(os.homedir(), '.config', 'snag');
+const CONFIG_DIR =
+  process.platform === 'win32'
+    ? path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'snag')
+    : path.join(os.homedir(), '.config', 'snag');
 const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json');
 
 const DEFAULTS = {

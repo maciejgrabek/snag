@@ -86,7 +86,11 @@ function register() {
 function playSound() {
   try {
     const { exec } = require('child_process');
-    exec('afplay /System/Library/Sounds/Tink.aiff', () => {});
+    if (process.platform === 'darwin') {
+      exec('afplay /System/Library/Sounds/Tink.aiff', () => {});
+    } else if (process.platform === 'win32') {
+      exec('powershell -c "(New-Object Media.SoundPlayer \'C:\\Windows\\Media\\notify.wav\').PlaySync()"', () => {});
+    }
   } catch {
     // Non-fatal
   }
