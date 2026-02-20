@@ -24,7 +24,7 @@ Also thought about it. Chrome extensions can't talk to Claude Code — they're c
 
 ## So What Does Snag Actually Do?
 
-Screenshot (`Cmd+Shift+4`) → Hotkey (`Cmd+Shift+X`) → Type what's wrong → `Cmd+Enter`. Under 5 seconds. Done.
+Screenshot (`Cmd+Shift+4` or `Cmd+Shift+5`) → Hotkey (`Cmd+Shift+X`) → Type what's wrong → `Cmd+Enter`. Under 5 seconds. Done.
 
 Snag reads the screenshot from your clipboard, shows a minimal form, and saves everything as plain Markdown + PNG into your project's `.snag/` directory:
 
