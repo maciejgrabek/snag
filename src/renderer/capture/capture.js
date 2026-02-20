@@ -33,6 +33,7 @@ async function refreshForm() {
   descriptionInput.value = '';
   tagsInput.value = '';
   statusBar.style.display = 'none';
+  form.querySelector('.save-btn').disabled = false;
   descriptionInput.focus();
 }
 

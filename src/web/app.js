@@ -229,3 +229,10 @@ function esc(s) {
 
 // --- Init ---
 navigate('projects');
+
+// Refresh when tab gets focus (e.g. after capturing a snag)
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) {
+    navigate(currentView, currentProject);
+  }
+});
