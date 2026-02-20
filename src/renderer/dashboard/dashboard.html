@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';">
+  <title>Snag Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="dashboard">
+    <header class="titlebar">
+      <h1>Snag</h1>
+    </header>
+
+    <div class="content">
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <p>No projects yet.</p>
+        <p class="hint">Use Cmd+Shift+X to capture your first snag.</p>
+      </div>
+
+      <div id="project-list" class="project-list"></div>
+    </div>
+
+    <footer class="footer">
+      <button id="cleanup-btn" class="footer-btn">Run Cleanup</button>
+      <span id="footer-status" class="footer-status"></span>
+    </footer>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline';">
+  <title>Snag Capture</title>
+  <link rel="stylesheet" href="capture.css">
+</head>
+<body>
+  <div class="capture-container">
+    <div class="drag-handle"></div>
+
+    <div id="preview-area" class="preview-area">
+      <div id="preview-placeholder" class="preview-placeholder">
+        <span class="preview-icon">📋</span>
+        <span>No screenshot in clipboard</span>
+        <span class="hint">Take a screenshot, then click here to load it</span>
+      </div>
+      <img id="preview-image" class="preview-image" style="display: none;" alt="Screenshot preview">
+    </div>
+
+    <form id="capture-form" class="capture-form">
+      <input
+        id="description"
+        type="text"
+        class="description-input"
+        placeholder="What's the issue? (required)"
+        autocomplete="off"
+        autofocus
+      >
+
+      <input
+        id="tags"
+        type="text"
+        class="tags-input"
+        placeholder="Tags (comma-separated, optional)"
+        autocomplete="off"
+      >
+
+      <div class="project-row">
+        <select id="project-select" class="project-select">
+          <option value="" disabled>Choose project...</option>
+        </select>
+        <button type="button" id="browse-btn" class="browse-btn" title="Browse...">📂</button>
+      </div>
+
+      <div class="actions">
+        <span class="shortcut-hint">⌘Enter to save · Esc to dismiss</span>
+        <button type="submit" class="save-btn">Save</button>
+      </div>
+    </form>
+
+    <div id="status-bar" class="status-bar" style="display: none;"></div>
+  </div>
+
+  <script src="capture.js"></script>
+</body>
+</html>
