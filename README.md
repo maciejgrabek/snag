@@ -107,7 +107,11 @@ curl -X PATCH http://127.0.0.1:9999/api/issues/ISSUE_ID \
 
 The API returns file paths in every response, so the agent can go read the actual screenshot when it needs the visual context.
 
-There's also a **web dashboard** at `http://127.0.0.1:9999` — browse projects, view issues with screenshots, toggle status. Useful when you want to review what you've captured.
+### Option C: Open the web dashboard
+
+Point your browser at `http://127.0.0.1:9999`. You get a full dashboard — all your projects, all your issues, screenshots inline, status filters, click to resolve or reopen. No login, no setup. It's running locally whenever Snag is running.
+
+This is handy when you want to review what you've captured, triage a batch of issues, or just see what's still open across projects. The browser tab auto-refreshes when you switch back to it, so it stays current as you capture new snags.
 
 ### Why not MCP?
 
@@ -120,9 +124,11 @@ git clone <repo-url> && cd snag
 ./setup.sh
 ```
 
-That's it. Builds the app, copies it to `/Applications`, and launches it. You'll see a small icon in your menubar. No dock icon, no window — it stays out of your way until you need it.
+That's it. One command. It installs dependencies, builds a native macOS `.app` bundle, copies `Snag.app` to `/Applications`, and launches it. It's a real app — shows up in Spotlight, survives reboots, lives in your menubar. No dock icon, no window — it stays out of your way until you need it.
 
-For development:
+To uninstall: `rm -rf /Applications/Snag.app`
+
+For development (run directly from source without installing):
 
 ```bash
 npm install && npm start
