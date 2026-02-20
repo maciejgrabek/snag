@@ -21,6 +21,8 @@ function parseIssue(mdPath) {
   const status = content.match(/\*\*Status:\*\*\s*(\w+)/)?.[1]?.toLowerCase() || 'open';
   const captured = content.match(/\*\*Captured:\*\*\s*(.+)/)?.[1] || null;
   const tags = content.match(/\*\*Tags:\*\*\s*(.+)/)?.[1]?.split(',').map(t => t.trim()) || [];
+  const detailsMatch = content.match(/## Details\n\n([\s\S]*?)(?=\n---|\n##|$)/);
+  const details = detailsMatch ? detailsMatch[1].trim() : null;
 
   return {
     id: basename,
@@ -28,6 +30,7 @@ function parseIssue(mdPath) {
     status,
     captured,
     tags,
+    details,
     mdPath,
     pngPath: hasPng ? pngPath : null,
     hasScreenshot: hasPng,

@@ -39,7 +39,7 @@ function getClipboardImage() {
   };
 }
 
-function saveCaptureToProject({ projectPath, description, tags, imageBuffer }) {
+function saveCaptureToProject({ projectPath, description, details, tags, imageBuffer }) {
   const snagDir = path.join(projectPath, '.snag');
   fs.mkdirSync(snagDir, { recursive: true });
 
@@ -71,6 +71,9 @@ function saveCaptureToProject({ projectPath, description, tags, imageBuffer }) {
   }
   if (pngPath) {
     lines.push('', `![screenshot](${baseName}.png)`);
+  }
+  if (details) {
+    lines.push('', '## Details', '', details);
   }
   lines.push('', '---', '', '');
 

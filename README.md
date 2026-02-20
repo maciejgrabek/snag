@@ -46,6 +46,11 @@ The `.md` file is self-contained and readable by anything:
 
 ![screenshot](2026-02-19-143027-button-overlaps-sidebar.png)
 
+## Details
+
+Only happens below 768px. The sidebar z-index seems wrong.
+Expected: sidebar collapses into hamburger menu on mobile.
+
 ---
 
 ```
@@ -57,33 +62,56 @@ No proprietary format. No database. No account. No sync service. No subscription
 `Cmd+Shift+X` opens a Spotlight-style window:
 
 1. **Project** — dropdown, pre-selected to last used. Browse button to add new ones.
-2. **Screenshot** — preview from clipboard. Forgot to screenshot first? Click the preview area to retry after you take one.
+2. **Screenshot** — preview from clipboard. Forgot to screenshot first? Click the preview area to retry after you take one. Want a different screenshot? Click the preview to replace it.
 3. **Description** — what's wrong, in your words, right now while you're looking at it. Not later when you've forgotten.
-4. **Tags** — optional, comma-separated.
+4. **Details** — optional textarea for steps to reproduce, expected behavior, or anything else your agent needs to understand the bug.
+5. **Tags** — optional, comma-separated.
 
 `Cmd+Enter` to save. `Esc` to dismiss. Keyboard-only flow, zero mouse required.
 
-## Web Dashboard & API
+## How Your Agent Gets the Context
 
-Snag runs a local server at `http://127.0.0.1:9999`. Open it in your browser to see all your projects and issues, or use the API from any tool:
+Two ways. Use whichever fits.
+
+### Option A: Just read the files
+
+The `.snag/` directory is right there in your project root. Your agent is already working in the project — it can just read the files directly:
+
+```
+my-project/.snag/
+  2026-02-19-143027-button-overlaps-sidebar.md   ← plain markdown
+  2026-02-19-143027-button-overlaps-sidebar.png   ← full screenshot
+```
+
+No API, no setup, no configuration. `ls .snag/`, read the `.md`, look at the `.png`. Done. The files are self-contained — the markdown has the description, status, tags, details, and a relative link to the screenshot.
+
+### Option B: Use the local API
+
+Snag runs a local server at `http://127.0.0.1:9999`. More structured than reading files — your agent can query, filter, and update issues without parsing markdown:
 
 ```bash
-# List all projects
+# What projects are tracked?
 curl http://127.0.0.1:9999/api/projects
 
-# Get open issues for a project
-curl http://127.0.0.1:9999/api/issues?project=/path/to/project&status=open
+# What's open in my project?
+curl 'http://127.0.0.1:9999/api/issues?project=/path/to/project&status=open'
 
-# Get the next issue to work on
-curl http://127.0.0.1:9999/api/issues/next
+# What should I work on next?
+curl 'http://127.0.0.1:9999/api/issues/next?project=/path/to/project'
 
-# Mark an issue as resolved
+# Done fixing it
 curl -X PATCH http://127.0.0.1:9999/api/issues/ISSUE_ID \
   -H 'Content-Type: application/json' \
   -d '{"project": "/path/to/project", "status": "resolved"}'
 ```
 
-This is the sweet spot between MCP (overkill) and raw file access (your tool has to know where to look and how to parse). Any AI agent, CLI tool, or script can query the API. No SDK, no auth, no setup.
+The API returns file paths in every response, so the agent can go read the actual screenshot when it needs the visual context.
+
+There's also a **web dashboard** at `http://127.0.0.1:9999` — browse projects, view issues with screenshots, toggle status. Useful when you want to review what you've captured.
+
+### Why not MCP?
+
+This sits in the sweet spot between MCP (overkill — you'd need a server, tool definitions bloating every message, a whole protocol layer for "read a file") and raw file access alone (your tool has to know where `.snag/` lives and how to parse the markdown). The API is optional, zero-config, and any tool that can `curl` can use it. No SDK, no auth, no setup.
 
 ## Install
 
@@ -141,7 +169,7 @@ Your agent is working on a feature. It takes a few minutes. Instead of staring a
 
 With Snag, you screenshot each bug as you find it, hit `Cmd+Shift+X`, type a quick description while you're *looking at the problem*, and move on. By the time your agent finishes the current task, there's a neat queue of issues waiting in `.snag/` with full visual context. Point the agent at them. It reads the markdown, sees the screenshots, and knows exactly what to fix. You didn't wait. You didn't context-switch. You didn't lose any details.
 
-The API makes this even smoother — your agent can call `http://127.0.0.1:9999/api/issues/next` to grab the next bug in the queue and `PATCH` it to `resolved` when it's done. You're testing, it's fixing. Parallel workflows, no coordination overhead.
+The API makes this even smoother — your agent can call `http://127.0.0.1:9999/api/issues/next?project=/path/to/project` to grab the next bug in its project and `PATCH` it to `resolved` when it's done. Or it can just `ls .snag/` and read the files directly — they're plain markdown sitting right there in the project root. You're testing, it's fixing. Parallel workflows, no coordination overhead.
 
 This is why Jira doesn't fit here. You're not managing a backlog across a team. You're feeding context to an AI agent as fast as you can find bugs. The overhead of any "project management" tool is pure friction. You need a capture tool, not a planning tool.
 

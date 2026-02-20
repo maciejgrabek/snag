@@ -19,7 +19,7 @@ function register() {
     return config.read();
   });
 
-  ipcMain.handle('snag:save-capture', async (_event, { projectPath, description, tags }) => {
+  ipcMain.handle('snag:save-capture', async (_event, { projectPath, description, details, tags }) => {
     try {
       // Read clipboard image fresh (full resolution)
       const image = capture.getClipboardImage();
@@ -28,6 +28,7 @@ function register() {
       const result = capture.saveCaptureToProject({
         projectPath,
         description,
+        details,
         tags,
         imageBuffer,
       });

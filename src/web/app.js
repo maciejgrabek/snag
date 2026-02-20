@@ -191,6 +191,10 @@ async function renderIssueDetail(project, issueId) {
         <img class="issue-screenshot" src="/screenshots?project=${enc(project)}&file=${enc(issueId + '.png')}" alt="Screenshot">
       ` : ''}
 
+      ${issue.details ? `
+        <div class="issue-details">${esc(issue.details)}</div>
+      ` : ''}
+
       <div class="issue-file-paths">
         <div><strong>Markdown:</strong> ${esc(issue.mdPath)}</div>
         ${issue.pngPath ? `<div><strong>Screenshot:</strong> ${esc(issue.pngPath)}</div>` : ''}

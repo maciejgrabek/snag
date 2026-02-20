@@ -1,5 +1,6 @@
 const form = document.getElementById('capture-form');
 const descriptionInput = document.getElementById('description');
+const detailsInput = document.getElementById('details');
 const tagsInput = document.getElementById('tags');
 const projectSelect = document.getElementById('project-select');
 const browseBtn = document.getElementById('browse-btn');
@@ -31,6 +32,7 @@ async function refreshForm() {
 
   // Reset form
   descriptionInput.value = '';
+  detailsInput.value = '';
   tagsInput.value = '';
   statusBar.style.display = 'none';
   form.querySelector('.save-btn').disabled = false;
@@ -70,8 +72,9 @@ window.snag.onCaptureShown(() => {
 // Initial load
 refreshForm();
 
-// Click placeholder to retry clipboard read
+// Click preview area to refresh screenshot from clipboard
 previewPlaceholder.addEventListener('click', refreshClipboard);
+previewImage.addEventListener('click', refreshClipboard);
 
 async function refreshClipboard() {
   const image = await window.snag.getClipboardImage();
@@ -129,7 +132,9 @@ async function saveCapture() {
   const saveBtn = form.querySelector('.save-btn');
   saveBtn.disabled = true;
 
-  const result = await window.snag.saveCapture({ projectPath, description, tags });
+  const details = detailsInput.value.trim();
+
+  const result = await window.snag.saveCapture({ projectPath, description, details, tags });
 
   if (result.success) {
     showStatus('Saved!', 'success');

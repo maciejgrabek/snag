@@ -311,6 +311,17 @@ body {
   border: 1px solid var(--border);
 }
 
+.issue-details {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
 .issue-file-paths {
   font-family: 'SF Mono', SFMono-Regular, Menlo, monospace;
   font-size: 12px;

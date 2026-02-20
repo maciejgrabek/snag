@@ -11,7 +11,7 @@ function getCaptureWindow() {
 
   captureWindow = new BrowserWindow({
     width: 520,
-    height: 480,
+    height: 560,
     show: false,
     frame: false,
     resizable: false,
