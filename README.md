@@ -140,7 +140,7 @@ npm install && npm start
 - **One hotkey** — `Cmd+Shift+X` (configurable)
 - **Clipboard-based** — uses your OS's native screenshot tool, no custom capture logic
 - **Project-aware** — captures go to the right project directory, most recent first
-- **Gitignored automatically** — `.snag/` is added to your `.gitignore` on first capture
+- **Gitignored automatically** — `.snag/` is added to your `.gitignore` on first capture (in git repos)
 - **Auto-cleanup** — resolved issues are swept after a configurable retention period
 - **Local API** — `http://127.0.0.1:9999/api` for CLI tools and AI agents
 - **Web dashboard** — browse projects and issues at `http://127.0.0.1:9999`

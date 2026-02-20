@@ -67,7 +67,10 @@ function startBackground() {
   const cfg = config.read();
   if (!cfg.cleanup.enabled) return;
 
-  const interval = (cfg.cleanup.intervalMinutes || 30) * 60 * 1000;
+  const minutes = cfg.cleanup.intervalMinutes;
+  if (!minutes || minutes <= 0) return;
+
+  const interval = minutes * 60 * 1000;
   cleanupTimer = setInterval(() => sweepAll(), interval);
 }
 

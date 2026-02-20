@@ -84,12 +84,9 @@ function register() {
 }
 
 function playSound() {
-  // Sound will be played by the renderer via the capture-shown flow
-  // or we can use a shell command as fallback
   try {
-    const soundPath = path.join(__dirname, '..', '..', 'assets', 'capture-sound.mp3');
     const { exec } = require('child_process');
-    exec(`afplay "${soundPath}"`, () => {});
+    exec('afplay /System/Library/Sounds/Tink.aiff', () => {});
   } catch {
     // Non-fatal
   }

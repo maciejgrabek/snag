@@ -124,13 +124,19 @@ function route(req, res) {
 
   if (issueMatch && req.method === 'PATCH') {
     const id = decodeURIComponent(issueMatch[1]);
-    return readBody(req, (body) => {
+    return readBody(req, res, (body) => {
       try {
         const { project, status: newStatus } = JSON.parse(body);
         if (!project) return json(res, { error: 'Missing project in body' }, 400);
 
         const mdPath = path.join(project, '.snag', `${id}.md`);
         if (!fs.existsSync(mdPath)) return json(res, { error: 'Not found' }, 404);
+
+        // Validate status
+        const validStatuses = ['open', 'resolved'];
+        if (newStatus && !validStatuses.includes(newStatus)) {
+          return json(res, { error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` }, 400);
+        }
 
         let content = fs.readFileSync(mdPath, 'utf-8');
         if (newStatus) {
@@ -225,10 +231,19 @@ function json(res, data, status = 200) {
   res.end(JSON.stringify(data, null, 2));
 }
 
-function readBody(req, cb) {
+function readBody(req, res, cb) {
+  const MAX_BODY = 8192;
   let body = '';
-  req.on('data', chunk => { body += chunk; });
-  req.on('end', () => cb(body));
+  req.on('data', chunk => {
+    body += chunk;
+    if (body.length > MAX_BODY) {
+      req.destroy();
+      json(res, { error: 'Request body too large' }, 413);
+    }
+  });
+  req.on('end', () => {
+    if (body.length <= MAX_BODY) cb(body);
+  });
 }
 
 // --- Lifecycle ---
