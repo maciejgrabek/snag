@@ -1,4 +1,4 @@
-const { BrowserWindow, screen } = require('electron');
+const { BrowserWindow, screen, nativeTheme } = require('electron');
 const path = require('path');
 
 let captureWindow = null;
@@ -6,6 +6,10 @@ let dashboardWindow = null;
 
 const isMac = process.platform === 'darwin';
 const preloadPath = path.join(__dirname, '..', 'preload', 'preload.js');
+
+function getBackgroundColor() {
+  return nativeTheme.shouldUseDarkColors ? '#1c1c1e' : '#fafafa';
+}
 
 function getCaptureWindow() {
   if (captureWindow && !captureWindow.isDestroyed()) return captureWindow;
@@ -87,6 +91,7 @@ function getDashboardWindow() {
     width: 700,
     height: 500,
     show: false,
+    backgroundColor: getBackgroundColor(),
     webPreferences: {
       preload: preloadPath,
       contextIsolation: true,
@@ -102,6 +107,13 @@ function getDashboardWindow() {
   }
 
   dashboardWindow = new BrowserWindow(opts);
+
+  // Update background color when system theme changes
+  nativeTheme.on('updated', () => {
+    if (dashboardWindow && !dashboardWindow.isDestroyed()) {
+      dashboardWindow.setBackgroundColor(getBackgroundColor());
+    }
+  });
 
   dashboardWindow.loadFile(
     path.join(__dirname, '..', 'renderer', 'dashboard', 'dashboard.html')

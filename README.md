@@ -130,7 +130,7 @@ That's it. One command. It installs dependencies, builds a native macOS `.app` b
 
 To uninstall: `rm -rf /Applications/Snag.app`
 
-### Windows (untested — contributions welcome)
+### Windows
 
 ```
 git clone <repo-url> && cd snag
@@ -138,8 +138,6 @@ setup.bat
 ```
 
 Builds an installer and a portable `.exe` in the `dist\` folder. Shortcut is `Ctrl+Shift+X`. Config lives at `%APPDATA%\snag\config.json`.
-
-Windows support is implemented but hasn't been tested on a real Windows machine yet. If you try it: issues and PRs are very welcome.
 
 ### From source (any platform)
 
