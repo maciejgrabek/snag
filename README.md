@@ -200,6 +200,33 @@ The API makes this even smoother — your agent can call `http://127.0.0.1:9999/
 
 This is why Jira doesn't fit here. You're not managing a backlog across a team. You're feeding context to an AI agent as fast as you can find bugs. The overhead of any "project management" tool is pure friction. You need a capture tool, not a planning tool.
 
+## Claude Code Integration
+
+Snag ships with a `/snag` skill for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Once installed, you can manage captured issues directly from your Claude Code session:
+
+```
+/snag              — show all open issues with screenshots
+/snag all          — show all issues (open + resolved)
+/snag done <slug>  — mark an issue as resolved
+/snag done all     — mark all open issues as resolved
+```
+
+You can also just say "check snag" and Claude will look at `.snag/` and show you what's open.
+
+### Install the skill
+
+```bash
+./skills/claude-code/install.sh
+```
+
+This copies `SKILL.md` to `~/.claude/skills/snag/` — a personal skill available in all your projects. No restart needed, `/snag` is available immediately.
+
+### How it works
+
+The skill tells Claude Code how to read `.snag/` files, display screenshots (Claude is multimodal), filter by status, and mark issues as resolved. It works purely via file access — no API server required, no MCP, no extensions.
+
+When you fix an issue, Claude will proactively offer to mark it as resolved. The full loop: capture → review → fix → close, all without leaving the terminal.
+
 ## Who Is This For?
 
 Solo developers and small teams who work with AI coding agents and find that the hardest part of fixing a visual bug is getting the context from the browser to the tool that's going to fix it. If you've ever pasted a screenshot into a chat, then typed "see the button in the top right? it's overlapping the sidebar" — Snag replaces that entire dance.
