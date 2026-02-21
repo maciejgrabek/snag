@@ -42,12 +42,6 @@ function getCaptureWindow() {
     path.join(__dirname, '..', 'renderer', 'capture', 'capture.html')
   );
 
-  captureWindow.on('blur', () => {
-    if (captureWindow && !captureWindow.isDestroyed()) {
-      captureWindow.hide();
-    }
-  });
-
   captureWindow.on('closed', () => {
     captureWindow = null;
   });
@@ -130,9 +124,14 @@ function getDashboardWindow() {
   return dashboardWindow;
 }
 
+function isCaptureWindowVisible() {
+  return captureWindow && !captureWindow.isDestroyed() && captureWindow.isVisible();
+}
+
 module.exports = {
   getCaptureWindow,
   showCaptureWindow,
   hideCaptureWindow,
+  isCaptureWindowVisible,
   getDashboardWindow,
 };

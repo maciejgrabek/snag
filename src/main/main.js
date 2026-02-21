@@ -2,7 +2,7 @@ const { app } = require('electron');
 const tray = require('./tray');
 const shortcuts = require('./shortcuts');
 const ipc = require('./ipc');
-const { showCaptureWindow, getDashboardWindow } = require('./windows');
+const { showCaptureWindow, hideCaptureWindow, isCaptureWindowVisible, getDashboardWindow } = require('./windows');
 const cleanup = require('./cleanup');
 const server = require('./server');
 
@@ -36,10 +36,14 @@ app.whenReady().then(() => {
     onQuit: () => app.quit(),
   });
 
-  // Register global shortcut
+  // Register global shortcut (toggle)
   shortcuts.register(() => {
-    app.focus({ steal: true });
-    showCaptureWindow();
+    if (isCaptureWindowVisible()) {
+      hideCaptureWindow();
+    } else {
+      app.focus({ steal: true });
+      showCaptureWindow();
+    }
   });
 
   // Start background cleanup

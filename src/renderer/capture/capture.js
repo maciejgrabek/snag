@@ -8,6 +8,8 @@ const previewImage = document.getElementById('preview-image');
 const previewPlaceholder = document.getElementById('preview-placeholder');
 const statusBar = document.getElementById('status-bar');
 
+const closeBtn = document.querySelector('.close-btn');
+
 let hasImage = false;
 
 // --- Init ---
@@ -71,6 +73,11 @@ window.snag.onCaptureShown(() => {
 
 // Initial load
 refreshForm();
+
+// Close button
+closeBtn.addEventListener('click', () => {
+  window.snag.closeCapture();
+});
 
 // Click preview area to refresh screenshot from clipboard
 previewPlaceholder.addEventListener('click', refreshClipboard);
