@@ -41,6 +41,7 @@ The `.md` file is self-contained and readable by anything:
 # Button overlaps sidebar on mobile
 
 **Captured:** 2026-02-19T14:30:27.000Z
+**Type:** bug
 **Status:** open
 **Tags:** css, mobile
 
@@ -61,11 +62,12 @@ No proprietary format. No database. No account. No sync service. No subscription
 
 `Cmd+Shift+X` opens a Spotlight-style window:
 
-1. **Project** — dropdown, pre-selected to last used. Browse button to add new ones.
-2. **Screenshot** — preview from clipboard. Forgot to screenshot first? Click the preview area to retry after you take one. Want a different screenshot? Click the preview to replace it.
-3. **Description** — what's wrong, in your words, right now while you're looking at it. Not later when you've forgotten.
-4. **Details** — optional textarea for steps to reproduce, expected behavior, or anything else your agent needs to understand the bug.
-5. **Tags** — optional, comma-separated.
+1. **Type** — toggle between Bug and Feature. Defaults to Bug.
+2. **Project** — dropdown, pre-selected to last used. Browse button to add new ones.
+3. **Screenshot** — preview from clipboard. Forgot to screenshot first? Click the preview area to retry after you take one. Want a different screenshot? Click the preview to replace it.
+4. **Description** — what's wrong (or what you want), in your words, right now while you're looking at it. Not later when you've forgotten.
+5. **Details** — optional textarea for steps to reproduce, expected behavior, or anything else your agent needs to understand the issue.
+6. **Tags** — optional, comma-separated.
 
 `Cmd+Enter` to save. `Esc` to dismiss. Keyboard-only flow, zero mouse required.
 
@@ -150,6 +152,7 @@ npm install && npm start
 - **Menubar app** — always available, never in the way, no dock icon
 - **One hotkey** — `Cmd+Shift+X` (configurable)
 - **Clipboard-based** — uses your OS's native screenshot tool, no custom capture logic
+- **Bugs and features** — toggle between bug reports and feature requests in the same capture flow
 - **Project-aware** — captures go to the right project directory, most recent first
 - **Gitignored automatically** — `.snag/` is added to your `.gitignore` on first capture (in git repos)
 - **Auto-cleanup** — resolved issues are swept after a configurable retention period

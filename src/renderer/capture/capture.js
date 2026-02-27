@@ -9,8 +9,10 @@ const previewPlaceholder = document.getElementById('preview-placeholder');
 const statusBar = document.getElementById('status-bar');
 
 const closeBtn = document.querySelector('.close-btn');
+const typeBtns = document.querySelectorAll('.type-btn');
 
 let hasImage = false;
+let selectedType = 'bug';
 
 // --- Init ---
 
@@ -38,6 +40,8 @@ async function refreshForm() {
   tagsInput.value = '';
   statusBar.style.display = 'none';
   form.querySelector('.save-btn').disabled = false;
+  selectedType = 'bug';
+  typeBtns.forEach((btn) => btn.classList.toggle('selected', btn.dataset.type === 'bug'));
   descriptionInput.focus();
 }
 
@@ -73,6 +77,14 @@ window.snag.onCaptureShown(() => {
 
 // Initial load
 refreshForm();
+
+// Type toggle
+typeBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    selectedType = btn.dataset.type;
+    typeBtns.forEach((b) => b.classList.toggle('selected', b === btn));
+  });
+});
 
 // Close button
 closeBtn.addEventListener('click', () => {
@@ -141,7 +153,9 @@ async function saveCapture() {
 
   const details = detailsInput.value.trim();
 
-  const result = await window.snag.saveCapture({ projectPath, description, details, tags });
+  const type = selectedType;
+
+  const result = await window.snag.saveCapture({ projectPath, description, details, tags, type });
 
   if (result.success) {
     showStatus('Saved!', 'success');
