@@ -155,6 +155,7 @@ npm install && npm start
 - **Bugs and features** — toggle between bug reports and feature requests in the same capture flow
 - **Project-aware** — captures go to the right project directory, most recent first
 - **Gitignored automatically** — `.snag/` is added to your `.gitignore` on first capture (in git repos)
+- **Dashboard actions** — resolve all open issues or clean resolved ones per project, right from the dashboard
 - **Auto-cleanup** — resolved issues are swept after a configurable retention period
 - **Local API** — `http://127.0.0.1:9999/api` for CLI tools and AI agents
 - **Web dashboard** — browse projects and issues at `http://127.0.0.1:9999`

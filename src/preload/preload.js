@@ -7,6 +7,8 @@ contextBridge.exposeInMainWorld('snag', {
   updateConfig: (partial) => ipcRenderer.invoke('snag:update-config', partial),
   getDashboardData: () => ipcRenderer.invoke('snag:get-dashboard-data'),
   runCleanup: () => ipcRenderer.invoke('snag:run-cleanup'),
+  resolveAll: (projectPath) => ipcRenderer.invoke('snag:resolve-all', projectPath),
+  cleanProject: (projectPath) => ipcRenderer.invoke('snag:clean-project', projectPath),
   openDirectoryDialog: () => ipcRenderer.invoke('snag:open-directory-dialog'),
   closeCapture: () => ipcRenderer.send('snag:close-capture'),
   onCaptureShown: (callback) => {

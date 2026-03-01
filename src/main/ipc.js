@@ -70,6 +70,14 @@ function register() {
     return cleanup.sweepAll();
   });
 
+  ipcMain.handle('snag:resolve-all', (_event, projectPath) => {
+    return cleanup.resolveAllInProject(projectPath);
+  });
+
+  ipcMain.handle('snag:clean-project', (_event, projectPath) => {
+    return cleanup.cleanProject(projectPath);
+  });
+
   ipcMain.handle('snag:open-directory-dialog', async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory', 'createDirectory'],

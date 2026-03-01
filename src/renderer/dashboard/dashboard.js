@@ -24,17 +24,48 @@ async function loadDashboard() {
         <span class="project-name">${escapeHtml(project.name)}</span>
         <span class="project-path">${escapeHtml(project.path)}</span>
       </div>
-      <div class="project-stats">
-        <span class="stat">
-          <span class="stat-dot open"></span>
-          ${project.stats.open} open
-        </span>
-        <span class="stat">
-          <span class="stat-dot resolved"></span>
-          ${project.stats.resolved} resolved
-        </span>
+      <div class="project-right">
+        <div class="project-stats">
+          <span class="stat">
+            <span class="stat-dot open"></span>
+            ${project.stats.open} open
+          </span>
+          <span class="stat">
+            <span class="stat-dot resolved"></span>
+            ${project.stats.resolved} resolved
+          </span>
+        </div>
+        <div class="project-actions">
+          <button class="action-btn resolve-all-btn" ${project.stats.open === 0 ? 'disabled' : ''}>Resolve All</button>
+          <button class="action-btn clean-btn" ${project.stats.resolved === 0 ? 'disabled' : ''}>Clean</button>
+        </div>
       </div>
     `;
+
+    card.querySelector('.resolve-all-btn').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const btn = e.target;
+      btn.disabled = true;
+      btn.textContent = 'Resolving...';
+      const result = await window.snag.resolveAll(project.path);
+      footerStatus.textContent = result.updated
+        ? `Resolved ${result.updated} item${result.updated === 1 ? '' : 's'} in ${escapeHtml(project.name)}`
+        : 'Nothing to resolve';
+      loadDashboard();
+    });
+
+    card.querySelector('.clean-btn').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const btn = e.target;
+      btn.disabled = true;
+      btn.textContent = 'Cleaning...';
+      const result = await window.snag.cleanProject(project.path);
+      footerStatus.textContent = result.deleted
+        ? `Deleted ${result.deleted} resolved item${result.deleted === 1 ? '' : 's'} from ${escapeHtml(project.name)}`
+        : 'Nothing to clean';
+      loadDashboard();
+    });
+
     projectList.appendChild(card);
   }
 }

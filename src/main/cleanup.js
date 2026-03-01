@@ -99,10 +99,58 @@ function getProjectStats(projectPath) {
   return { total: files.length, open, resolved };
 }
 
+function resolveAllInProject(projectPath) {
+  const snagDir = path.join(projectPath, '.snag');
+  if (!fs.existsSync(snagDir)) return { updated: 0 };
+
+  const files = fs.readdirSync(snagDir).filter((f) => f.endsWith('.md'));
+  let updated = 0;
+
+  for (const f of files) {
+    const mdPath = path.join(snagDir, f);
+    const content = fs.readFileSync(mdPath, 'utf-8');
+    const status = parseStatus(content);
+
+    if (status !== 'resolved') {
+      const newContent = content.replace(/\*\*Status:\*\*\s*\w+/, '**Status:** resolved');
+      fs.writeFileSync(mdPath, newContent, 'utf-8');
+      updated++;
+    }
+  }
+
+  return { updated };
+}
+
+function cleanProject(projectPath) {
+  const snagDir = path.join(projectPath, '.snag');
+  if (!fs.existsSync(snagDir)) return { deleted: 0 };
+
+  const files = fs.readdirSync(snagDir).filter((f) => f.endsWith('.md'));
+  let deleted = 0;
+
+  for (const f of files) {
+    const mdPath = path.join(snagDir, f);
+    const content = fs.readFileSync(mdPath, 'utf-8');
+    const status = parseStatus(content);
+
+    if (status === 'resolved') {
+      fs.unlinkSync(mdPath);
+      const pngFile = f.replace(/\.md$/, '.png');
+      const pngPath = path.join(snagDir, pngFile);
+      if (fs.existsSync(pngPath)) fs.unlinkSync(pngPath);
+      deleted++;
+    }
+  }
+
+  return { deleted };
+}
+
 module.exports = {
   sweepProject,
   sweepAll,
   startBackground,
   stopBackground,
   getProjectStats,
+  resolveAllInProject,
+  cleanProject,
 };
